@@ -40,7 +40,7 @@ uint8_t xPattern[8][12] = {
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
-  matrix.begin(); // Initialize the LED matrix
+  matrix.begin(); 
 
   Serial.begin(115200);
   while (!Serial);
@@ -62,7 +62,7 @@ void setup() {
   Serial.print("BMP180 status: ");
   Serial.println(bmpOK ? "Success" : "Failed");
 
-  // If either failed, enter blinking loop
+  
   if (!sdOK || !bmpOK) {
     errorLedState = true;
   }
@@ -89,20 +89,22 @@ void loop() {
   else{
     matrix.renderBitmap(xPattern, 8, 12);
   }
+
   // Read GPS data
   if (readGPSData(gps)) {
     String gpsLog = String("Lat: ") + gps.location.lat() +
                     ",Lng: " + gps.location.lng() +
                     ",Date: " + gps.date.month() + "/" + gps.date.day() + "/" + gps.date.year() +
                     ",Time: " + gps.time.hour() + ":" + gps.time.minute() + ":" + gps.time.second();
-    logToSDCard(gpsLog);  // Log GPS info
+    logToSDCard(gpsLog);  
   }
 
+  //bmp data
   float temperature, pressure, altitude;
   readBMP180Data(temperature, pressure, altitude);
   String barometerLog = String("Temp: ") + temperature + "C, Pressure: " + pressure + "hPa, Altitude: " + altitude + "m";
   logToSDCard(barometerLog);  
 
-    delay(2000);
+  delay(2000);
   
 }

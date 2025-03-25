@@ -5,7 +5,11 @@
 #include <SPI.h>
 
 bool initSDCard(uint8_t csPin = 4);
+
 void logToSDCard(const String &data);
+
 void logErrorToSDCard(const String &message);
+
+String getTimestamp();
 
 #endif

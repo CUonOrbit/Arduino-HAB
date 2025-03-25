@@ -1,7 +1,7 @@
 #include "GPSModule.h"
 #include <Arduino.h>
 
-TinyGPSPlus gps; // Define gps object here
+TinyGPSPlus gps; 
 
 bool readGPSData(TinyGPSPlus &gps)
 {
