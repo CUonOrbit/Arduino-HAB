@@ -1,5 +1,7 @@
+// !!! This is the first one i wrote, everything in here workd but its not in the same format as the rest so i changed it but i did it at home so idk if my other 3 files for the temp sens work 
+
 #include <Wire.h>
-#include <Adafruit_AHTX0.h>  // Make sure this library is installed
+#include <Adafruit_AHTX0.h>  
 
 Adafruit_AHTX0 aht;  // Create the sensor object
 
