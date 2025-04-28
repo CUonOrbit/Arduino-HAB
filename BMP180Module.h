@@ -8,6 +8,6 @@
 extern Adafruit_BMP085_Unified bmp;
 
 bool initBMP180();
-void readBMP180Data(float &temperature, float &pressure, float &altitude);
+bool readBMP180Data(float &temperature, float &pressure, float &altitude);
 
 #endif
