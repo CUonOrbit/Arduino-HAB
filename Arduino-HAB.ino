@@ -16,6 +16,9 @@ const int errorBlinkInterval = 500; // milliseconds
 bool errorLedState = false;
 unsigned long lastBlinkTime = 0;
 
+bool isTerminating = false;
+unsigned long terminationStart = 0;
+
 uint8_t smallCircle[8][12] = {
   {0,0,0,0,0,0,0,0,0,0,0,0},
   {0,0,0,1,1,1,1,0,0,0,0,0},
@@ -99,11 +102,25 @@ void loop() {
     logToSDCard(gpsLog);  
   }
 
-  //bmp data
+  //BMP data
   float temperature, pressure, altitude;
   readBMP180Data(temperature, pressure, altitude);
   String barometerLog = String("Temp: ") + temperature + "C, Pressure: " + pressure + "hPa, Altitude: " + altitude + "m";
   logToSDCard(barometerLog);  
+
+  //Termination
+  unsigned long currentTime = millis();  
+  if(terminationStart == 0 && ((currentTime > TERMINATION_TIME  && !terminationStart) || altitude > TERMINATION_HEIGHT)) {
+    logToSDCard("TERMINATING FLIGHT"); 
+    digitalWrite(RELAY_PIN, HIGH); // Turn relay ON
+    isTerminating = true;
+    terminationStart = currentTime;
+  }
+  else if(terminationStart && currentTime - terminationStart > TERMINATION_CUT_TIME){
+    logToSDCard("FLIGHT TERMINATION COMPLETE"); 
+    digitalWrite(RELAY_PIN, LOW);  // Turn relay OFF
+    isTerminating = false;
+  }
 
   delay(2000);
   
