@@ -25,6 +25,7 @@ All sensor readings are timestamped and written to a log file for post-flight an
 |--------------------|--------------|-----------------------------|
 | Arduino Uno R4     | USB / Battery| Main controller             |
 | BMP180 Sensor      | 5V           | I2C connection              |
+| AHTX0 Sensor       | 5V           | I2C connection              |
 | GPS Module         | 3.3V         | UART connection             |
 | MicroSD Card Module| 5V           | SPI connection              |
 
@@ -34,6 +35,7 @@ All sensor readings are timestamped and written to a log file for post-flight an
 
 1. **Install the required Arduino libraries:**
    - Adafruit BMP085/BMP180 Unified
+   - Adafruit_AHTX0
    - TinyGPS++
    - SD
 

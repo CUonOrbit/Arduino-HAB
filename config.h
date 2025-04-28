@@ -6,9 +6,9 @@
 #define GPS_RX_PIN        0            
 #define GPS_TX_PIN        1            
 
-// BMP180 (I2C Pins - fixed on Uno)
-#define BMP180_SDA_PIN    A4           
-#define BMP180_SCL_PIN    A5         
+// I2C Pins - fixed on Uno
+#define SDA_PIN    A4           
+#define SCL_PIN    A5         
 
 // SD Card Module (SPI Pins - fixed on Uno)
 #define SD_CS_PIN         4           
