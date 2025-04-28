@@ -11,7 +11,7 @@ bool initBMP180() {
     return true;
 }
 
-void readBMP180Data(float &temperature, float &pressure, float &altitude) {
+bool readBMP180Data(float &temperature, float &pressure, float &altitude) {
     sensors_event_t event;
     bmp.getEvent(&event);
 
@@ -21,7 +21,9 @@ void readBMP180Data(float &temperature, float &pressure, float &altitude) {
         bmp.getTemperature(&temperature);  
         
         altitude = bmp.pressureToAltitude(1013.25, pressure);  
+        return true;
     } else {
         Serial.println(F("Error reading pressure data"));
+        return false;
     }
 }

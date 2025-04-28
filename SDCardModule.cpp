@@ -37,7 +37,7 @@ void logToSDCard(const String &data) {
         Serial.print("Logged to SD card: ");
         Serial.println(timestamp + " -> " + data);
     } else {
-      Serial.println("error opening log.txt");
+      Serial.println("Error opening log.txt");
     }
 }
 

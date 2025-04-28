@@ -3,6 +3,7 @@
 #include "GPSModule.h"
 #include "SDCardModule.h"
 #include "BMP180Module.h"
+#include "TempModule.h" 
 #include "Arduino_LED_Matrix.h" // Include the LED Matrix library
 #include "config.h"
 
@@ -52,9 +53,11 @@ void setup() {
   // Track module initialization status
   bool sdOK = initSDCard(SD_CS_PIN);
   bool bmpOK = initBMP180();
+  bool tempOK = initAHT10();
 
   if (!sdOK) Serial.println(F("SD card initialization failed."));
   if (!bmpOK) Serial.println(F("BMP180 initialization failed."));
+
 
   Serial.print("SD Card status: ");
   Serial.println(sdOK ? "Success" : "Failed");
@@ -62,8 +65,11 @@ void setup() {
   Serial.print("BMP180 status: ");
   Serial.println(bmpOK ? "Success" : "Failed");
 
+  Serial.print("AHT10 init: ");
+  Serial.println(tempOK ? "Success" : "FAILED");
+
   
-  if (!sdOK || !bmpOK) {
+  if (!sdOK || !bmpOK|| !tempOK) {
     errorLedState = true;
   }
 
@@ -97,14 +103,28 @@ void loop() {
                     ",Date: " + gps.date.month() + "/" + gps.date.day() + "/" + gps.date.year() +
                     ",Time: " + gps.time.hour() + ":" + gps.time.minute() + ":" + gps.time.second();
     logToSDCard(gpsLog);  
+  } else {
+    logToSDCard("Error: GPS reading failed!");
   }
 
   //bmp data
   float temperature, pressure, altitude;
-  readBMP180Data(temperature, pressure, altitude);
-  String barometerLog = String("Temp: ") + temperature + "C, Pressure: " + pressure + "hPa, Altitude: " + altitude + "m";
-  logToSDCard(barometerLog);  
+  if(readBMP180Data(temperature, pressure, altitude)){
+    String barometerLog = String("Temp: ") + temperature + "C, Pressure: " + pressure + "hPa, Altitude: " + altitude + "m";
+    logToSDCard(barometerLog);  
+  } else {
+    logToSDCard("Error: BMP180 reading failed!");
+  }
 
+  //read temp and humidity data
+  float tC, hPct;
+  if (readAHT10Data(tC, hPct)) {
+    String tempLog = String("Temp: ") + tC + "C, Humidity: " + hPct + "%";
+    logToSDCard(tempLog);
+  } else {
+    logToSDCard("Error: AHT10 reading failed!");
+  }
+  
   delay(2000);
   
 }
