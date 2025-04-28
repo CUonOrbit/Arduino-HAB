@@ -103,24 +103,28 @@ void loop() {
                     ",Date: " + gps.date.month() + "/" + gps.date.day() + "/" + gps.date.year() +
                     ",Time: " + gps.time.hour() + ":" + gps.time.minute() + ":" + gps.time.second();
     logToSDCard(gpsLog);  
+  } else {
+    logToSDCard("Error: GPS reading failed!");
   }
 
   //bmp data
   float temperature, pressure, altitude;
-  readBMP180Data(temperature, pressure, altitude);
-  String barometerLog = String("Temp: ") + temperature + "C, Pressure: " + pressure + "hPa, Altitude: " + altitude + "m";
-  logToSDCard(barometerLog);  
+  if(readBMP180Data(temperature, pressure, altitude)){
+    String barometerLog = String("Temp: ") + temperature + "C, Pressure: " + pressure + "hPa, Altitude: " + altitude + "m";
+    logToSDCard(barometerLog);  
+  } else {
+    logToSDCard("Error: BMP180 reading failed!");
+  }
 
   //read temp and humidity data
-  {
-    float tC, hPct;
-    if (readAHT10Data(tC, hPct)) {
-      String tempLog = String("Temp: ") + tC + "C, Humidity: " + hPct + "%";
-      logToSDCard(tempLog);
-    } else {
-      logToSDCard("Error: AHT10 reading failed!");
-    }
+  float tC, hPct;
+  if (readAHT10Data(tC, hPct)) {
+    String tempLog = String("Temp: ") + tC + "C, Humidity: " + hPct + "%";
+    logToSDCard(tempLog);
+  } else {
+    logToSDCard("Error: AHT10 reading failed!");
   }
+  
   delay(2000);
   
 }
